@@ -1,5 +1,5 @@
 import React from 'react'
-import './index.css';
+import './index.css'; // ✅ Tailwind styles imported correctly
 import ReactDOM from 'react-dom/client'
 import App from './App'
 
