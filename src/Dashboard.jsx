@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Area, AreaChart } from 'recharts';
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  PieChart, Pie, Cell, LineChart, Line
+} from 'recharts';
 import { Eye, Users, Glasses, Activity, TrendingUp, MapPin, Calendar, Award } from 'lucide-react';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
-  // Processed data from the document - Complete district data
   const districtData = [
     { district: 'Kolkata', screened: 38598, spectacles: 15990, cataract: 3215, efficiency: 95 },
     { district: 'Murshidabad', screened: 32830, spectacles: 5493, cataract: 4402, efficiency: 88 },
@@ -76,9 +78,9 @@ const Dashboard = () => {
   const TabButton = ({ id, label, active, onClick }) => (
     <button
       onClick={() => onClick(id)}
-      className={`px-6 py-3 rounded-lg font-medium transition-all ${
-        active 
-          ? 'bg-blue-600 text-white shadow-lg transform scale-105' 
+      className={`flex-1 py-2 text-center rounded-lg font-medium transition ${
+        active
+          ? 'bg-blue-600 text-white shadow'
           : 'bg-white text-gray-600 hover:bg-gray-50 hover:text-blue-600'
       }`}
     >
@@ -87,325 +89,208 @@ const Dashboard = () => {
   );
 
   const MetricCard = ({ metric, value, icon: Icon, color }) => (
-    <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-gray-100">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-gray-600 text-sm font-medium">{metric}</p>
-          <p className="text-3xl font-bold text-gray-900 mt-1">{value}</p>
-        </div>
-        <div className={`${color} p-3 rounded-full text-white`}>
-          <Icon size={24} />
-        </div>
+    <div className="bg-white rounded-lg p-4 shadow hover:shadow-md flex items-center justify-between">
+      <div>
+        <p className="text-gray-600 text-xs md:text-sm">{metric}</p>
+        <p className="text-xl md:text-2xl font-bold text-gray-900 mt-1">{value}</p>
+      </div>
+      <div className={`${color} p-2 md:p-3 rounded-full text-white`}>
+        <Icon size={20} />
       </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Chokher Alo Dashboard</h1>
-          <p className="text-gray-600 text-lg">Eye Care Program Analytics - West Bengal</p>
-          <div className="flex items-center justify-center mt-2 text-sm text-gray-500">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-6">
+  <div className="w-full max-w-7xl px-4 sm:px-6 lg:px-8 mx-auto">
+        <header className="text-center mb-6">
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-900">Chokher Alo Dashboard</h1>
+          <p className="text-gray-600 text-sm md:text-lg">Eye Care Program Analytics – West Bengal</p>
+          <div className="flex justify-center items-center mt-1 text-xs md:text-sm text-gray-500">
             <Calendar className="w-4 h-4 mr-1" />
             Report Date: May 5, 2025 | Cumulative since April 1, 2025
           </div>
-        </div>
+        </header>
 
-        {/* Navigation */}
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
-          <TabButton 
-            id="overview" 
-            label="Overview" 
-            active={activeTab === 'overview'} 
-            onClick={setActiveTab} 
-          />
-          <TabButton 
-            id="districts" 
-            label="District Performance" 
-            active={activeTab === 'districts'} 
-            onClick={setActiveTab} 
-          />
-          <TabButton 
-            id="sectors" 
-            label="Sector Analysis" 
-            active={activeTab === 'sectors'} 
-            onClick={setActiveTab} 
-          />
-          <TabButton 
-            id="facilities" 
-            label="Medical Facilities" 
-            active={activeTab === 'facilities'} 
-            onClick={setActiveTab} 
-          />
-        </div>
+        <nav className="flex gap-1 md:gap-2 mb-4">
+          {['overview', 'districts', 'sectors', 'facilities'].map(id => (
+            <TabButton
+              key={id}
+              id={id}
+              label={id.charAt(0).toUpperCase() + id.slice(1)}
+              active={activeTab === id}
+              onClick={setActiveTab}
+            />
+          ))}
+        </nav>
 
-        {/* Content */}
         {activeTab === 'overview' && (
-          <div className="space-y-8">
-            {/* Key Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {performanceMetrics.map((metric, index) => (
-                <MetricCard key={index} {...metric} />
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {performanceMetrics.map((m, i) => (
+                <MetricCard key={i} {...m} />
               ))}
             </div>
 
-            {/* Performance Trends */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                  <TrendingUp className="w-5 h-5 mr-2 text-blue-600" />
-                  Weekly Performance Trends
+            <div className="space-y-4 lg:flex lg:space-x-4">
+              <div className="bg-white rounded-lg shadow p-4 flex-1 overflow-x-auto">
+                <h3 className="text-lg font-bold mb-2 flex items-center">
+                  <TrendingUp className="w-5 h-5 mr-2 text-blue-600" /> Weekly Trends
                 </h3>
-                <div style={{ width: '100%', height: '300px' }}>
+                <div className="h-64 sm:h-80">
                   <ResponsiveContainer>
-                    <LineChart data={dailyTrends} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                    <LineChart data={dailyTrends} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                      <XAxis 
-                        dataKey="date" 
-                        stroke="#666"
-                        fontSize={12}
-                      />
-                      <YAxis 
-                        stroke="#666"
-                        fontSize={12}
-                      />
-                      <Tooltip 
-                        formatter={(value, name) => [value.toLocaleString(), name]}
-                        labelFormatter={(label) => `Week of ${label}`}
-                        contentStyle={{ 
-                          backgroundColor: '#fff', 
-                          border: '1px solid #ccc',
-                          borderRadius: '8px'
-                        }}
-                      />
-                      <Legend />
-                      <Line 
-                        type="monotone" 
-                        dataKey="screening" 
-                        stroke="#3b82f6" 
-                        strokeWidth={3} 
-                        name="People Screened"
-                        dot={{ fill: '#3b82f6', strokeWidth: 2, r: 4 }}
-                        activeDot={{ r: 6 }}
-                      />
-                      <Line 
-                        type="monotone" 
-                        dataKey="spectacles" 
-                        stroke="#10b981" 
-                        strokeWidth={3} 
-                        name="Spectacles Dispensed"
-                        dot={{ fill: '#10b981', strokeWidth: 2, r: 4 }}
-                        activeDot={{ r: 6 }}
-                      />
-                      <Line 
-                        type="monotone" 
-                        dataKey="surgeries" 
-                        stroke="#f59e0b" 
-                        strokeWidth={3} 
-                        name="Cataract Surgeries"
-                        dot={{ fill: '#f59e0b', strokeWidth: 2, r: 4 }}
-                        activeDot={{ r: 6 }}
-                      />
+                      <XAxis dataKey="date" stroke="#666" tick={{ fontSize: 10 }} />
+                      <YAxis stroke="#666" tick={{ fontSize: 10 }} />
+                      <Tooltip formatter={(v,n)=>[v.toLocaleString(), n]} labelFormatter={l=>`Week of ${l}`} />
+                      <Legend wrapperStyle={{ fontSize: 10 }} />
+                      <Line type="monotone" dataKey="screening" stroke="#3b82f6" strokeWidth={2} dot={false} />
+                      <Line type="monotone" dataKey="spectacles" stroke="#10b981" strokeWidth={2} dot={false} />
+                      <Line type="monotone" dataKey="surgeries" stroke="#f59e0b" strokeWidth={2} dot={false} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Program Summary</h3>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                    <span className="font-medium text-blue-900">Total People Screened</span>
-                    <span className="text-xl font-bold text-blue-600">797,695</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                    <span className="font-medium text-green-900">Spectacles Dispensed</span>
-                    <span className="text-xl font-bold text-green-600">83,984</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
-                    <span className="font-medium text-orange-900">Cataract Surgeries</span>
-                    <span className="text-xl font-bold text-orange-600">49,607</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
-                    <span className="font-medium text-purple-900">Success Rate</span>
-                    <span className="text-xl font-bold text-purple-600">78%</span>
-                  </div>
+              <div className="bg-white rounded-lg shadow p-4 flex-1">
+                <h3 className="text-lg font-bold mb-2">Program Summary</h3>
+                <div className="space-y-2">
+                  {[
+                    ['Total Screened', '797,695', 'bg-blue-50', 'text-blue-600'],
+                    ['Spectacles Dispensed', '83,984', 'bg-green-50', 'text-green-600'],
+                    ['Cataract Surgeries', '49,607', 'bg-orange-50', 'text-orange-600'],
+                    ['Success Rate', '78%', 'bg-purple-50', 'text-purple-600']
+                  ].map(([label, val, bg, txt], i) => (
+                    <div key={i} className={`flex justify-between items-center p-2 ${bg} rounded`}>
+                      <span className="text-sm font-medium text-gray-900">{label}</span>
+                      <span className={`text-lg font-bold ${txt}`}>{val}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-
-            {/* Top Performers */}
-            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <Award className="w-5 h-5 mr-2 text-yellow-600" />
-                Top Performing Districts
-              </h3>
-              <div className="space-y-3">
-                {topPerformers.map((district, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
-                        index === 0 ? 'bg-yellow-500' : index === 1 ? 'bg-gray-400' : 'bg-orange-500'
-                      }`}>
-                        {index + 1}
-                      </div>
-                      <span className="ml-3 font-medium">{district.district}</span>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <div className="text-sm text-gray-600">
-                        {district.surgeries.toLocaleString()} surgeries
-                      </div>
-                      <div className="w-32 bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-blue-600 h-2 rounded-full" 
-                          style={{ width: `${district.efficiency}%` }}
-                        ></div>
-                      </div>
-                      <span className="text-sm font-medium">{district.efficiency}%</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+<div className="bg-white rounded-lg shadow p-4 overflow-x-auto">
+  <h3 className="text-lg font-bold mb-2 flex items-center">
+    <Award className="w-5 h-5 mr-2 text-yellow-600" /> Top Districts
+  </h3>
+  <div className="space-y-2">
+    {topPerformers.map((d, i) => (
+      <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-gray-50 rounded-lg">
+        <div className="flex items-center">
+          <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white font-bold ${
+            i === 0 ? 'bg-yellow-500' : i === 1 ? 'bg-gray-400' : 'bg-orange-500'
+          }`}>
+            {i + 1}
           </div>
+          <span className="ml-2 font-medium">{d.district}</span>
+        </div>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mt-2 sm:mt-0">
+          <div className="text-sm text-gray-600 text-center sm:text-left">
+            {d.surgeries.toLocaleString()} surgeries
+          </div>
+          <div className="w-full sm:w-32 bg-gray-200 rounded-full h-2 mt-1 sm:mt-0">
+            <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${d.efficiency}%` }}></div>
+          </div>
+          <span className="text-sm font-medium text-center sm:text-left mt-1 sm:mt-0">{d.efficiency}%</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+        </div>
         )}
 
         {activeTab === 'districts' && (
-          <div className="space-y-8">
-            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">District-wise Performance (Top 15)</h3>
-              <ResponsiveContainer width="100%" height={500}>
-                <BarChart data={districtData.slice(0, 15)} margin={{ top: 20, right: 30, left: 20, bottom: 100 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    dataKey="district" 
-                    angle={-45} 
-                    textAnchor="end" 
-                    height={120}
-                    interval={0}
-                    fontSize={12}
-                  />
-                  <YAxis />
-                  <Tooltip formatter={(value) => value.toLocaleString()} />
-                  <Legend />
-                  <Bar dataKey="screened" fill="#3b82f6" name="People Screened" />
-                  <Bar dataKey="spectacles" fill="#10b981" name="Spectacles Dispensed" />
-                  <Bar dataKey="cataract" fill="#f59e0b" name="Cataract Surgeries" />
-                </BarChart>
-              </ResponsiveContainer>
+          <div className="space-y-4">
+            <div className="bg-white rounded-lg shadow p-4 overflow-x-auto">
+              <h3 className="text-lg font-bold mb-2">District-wise Performance (Top 15)</h3>
+              <div style={{ width: '100%', height: 300 }}>
+                <ResponsiveContainer>
+                  <BarChart data={districtData.slice(0, 15)} margin={{ top: 10, right: 5, bottom: 80, left: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="district" angle={-45} textAnchor="end" interval={0} tick={{ fontSize: 10 }} height={60} />
+                    <YAxis tick={{ fontSize: 10 }} />
+                    <Tooltip formatter={v=>v.toLocaleString()} />
+                    <Legend wrapperStyle={{ fontSize: 10 }} />
+                    <Bar dataKey="screened" fill="#3b82f6" />
+                    <Bar dataKey="spectacles" fill="#10b981" />
+                    <Bar dataKey="cataract" fill="#f59e0b" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">District Performance Table</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-gray-50">
-                      <th className="px-4 py-3 text-left font-medium text-gray-900">District</th>
-                      <th className="px-4 py-3 text-left font-medium text-gray-900">Screened</th>
-                      <th className="px-4 py-3 text-left font-medium text-gray-900">Spectacles</th>
-                      <th className="px-4 py-3 text-left font-medium text-gray-900">Surgeries</th>
-                      <th className="px-4 py-3 text-left font-medium text-gray-900">Efficiency</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {districtData.slice(0, 10).map((district, index) => (
-                      <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                        <td className="px-4 py-3 font-medium">{district.district}</td>
-                        <td className="px-4 py-3">{district.screened.toLocaleString()}</td>
-                        <td className="px-4 py-3">{district.spectacles.toLocaleString()}</td>
-                        <td className="px-4 py-3">{district.cataract.toLocaleString()}</td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center">
-                            <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
-                              <div 
-                                className="bg-blue-600 h-2 rounded-full" 
-                                style={{ width: `${district.efficiency}%` }}
-                              ></div>
-                            </div>
-                            <span className="text-sm font-medium">{district.efficiency}%</span>
-                          </div>
-                        </td>
-                      </tr>
+            <div className="bg-white rounded-lg shadow p-4 overflow-x-auto">
+              <h3 className="text-lg font-bold mb-2">Performance Table</h3>
+              <table className="min-w-full text-sm">
+                <thead>
+                  <tr className="bg-gray-50">
+                    {['District','Screened','Spectacles','Surgeries','Efficiency'].map(h => (
+                      <th key={h} className="p-2 text-left font-medium text-gray-900">{h}</th>
                     ))}
-                  </tbody>
-                </table>
-              </div>
+                  </tr>
+                </thead>
+                <tbody>
+                  {districtData.slice(0, 10).map((d,i) => (
+                    <tr key={i} className="border-b hover:bg-gray-50">
+                      <td className="p-2">{d.district}</td>
+                      <td className="p-2">{d.screened.toLocaleString()}</td>
+                      <td className="p-2">{d.spectacles.toLocaleString()}</td>
+                      <td className="p-2">{d.cataract.toLocaleString()}</td>
+                      <td className="p-2">
+                        <div className="flex items-center">
+                          <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                            <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${d.efficiency}%` }} />
+                          </div>
+                          <span className="text-xs font-medium">{d.efficiency}%</span>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         )}
 
         {activeTab === 'sectors' && (
-          <div className="space-y-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Sector-wise Screening Distribution</h3>
-                <div style={{ width: '100%', height: '300px' }}>
+          <div className="space-y-4">
+            <div className="bg-white rounded-lg shadow p-4 flex flex-col lg:flex-row gap-4">
+              <div className="flex-1 overflow-x-auto">
+                <h3 className="text-lg font-bold mb-2">Sector-wise Screening</h3>
+                <div className="h-64">
                   <ResponsiveContainer>
                     <PieChart>
-                      <Pie
-                        data={sectorData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={({name, percent}) => `${name}\n${(percent * 100).toFixed(1)}%`}
-                        outerRadius={100}
-                        fill="#8884d8"
-                        dataKey="value"
-                        stroke="#fff"
-                        strokeWidth={2}
-                      >
-                        {sectorData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
+                      <Pie data={sectorData} cx="50%" cy="50%" outerRadius={80} dataKey="value"
+                        label={({ name, percent }) => `${name} ${(percent*100).toFixed(1)}%`}>
+                        {sectorData.map((e,i) => <Cell key={i} fill={e.color} />)}
                       </Pie>
-                      <Tooltip 
-                        formatter={(value) => [value.toLocaleString(), 'People Screened']}
-                        contentStyle={{ 
-                          backgroundColor: '#fff', 
-                          border: '1px solid #ccc',
-                          borderRadius: '8px'
-                        }}
-                      />
+                      <Tooltip formatter={v=>[v.toLocaleString(),'People Screened']} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
               </div>
-              
-              <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Sector Performance Details</h3>
-                <div className="space-y-4">
-                  {sectorData.map((sector, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 rounded-lg" style={{backgroundColor: sector.color + '15'}}>
+              <div className="flex-1">
+                <h3 className="text-lg font-bold mb-2">Sector Details</h3>
+                <div className="space-y-2">
+                  {sectorData.map((s,i) => (
+                    <div key={i} className={`flex justify-between items-center p-2 rounded ${s.color}15`}>
                       <div className="flex items-center">
-                        <div className="w-4 h-4 rounded-full mr-3" style={{backgroundColor: sector.color}}></div>
+                        <span className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: s.color }}></span>
                         <div>
-                          <span className="font-medium text-lg">{sector.name} Sector</span>
-                          <div className="text-sm text-gray-600">
-                            {((sector.value / sectorData.reduce((a, b) => a + b.value, 0)) * 100).toFixed(1)}% of total
-                          </div>
+                          <p className="font-medium">{s.name} Sector</p>
+                          <p className="text-xs text-gray-600">
+                            {((s.value / sectorData.reduce((a,c)=>a+c.value,0))*100).toFixed(1)}%
+                          </p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-2xl font-bold" style={{color: sector.color}}>
-                          {sector.value.toLocaleString()}
-                        </div>
-                        <div className="text-sm text-gray-500">people screened</div>
+                        <p className="font-bold" style={{ color: s.color }}>{s.value.toLocaleString()}</p>
+                        <p className="text-xs text-gray-500">people screened</p>
                       </div>
                     </div>
                   ))}
-                </div>
-                
-                <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-900 mb-2">Key Insights:</h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• Public sector leads with 49.3% of total screenings</li>
-                    <li>• Private sector contributes 40.9% - strong partnership</li>
-                    <li>• NGO sector provides 9.8% - community outreach</li>
-                    <li>• Total collaborative screening: 797,695 people</li>
-                  </ul>
                 </div>
               </div>
             </div>
@@ -413,40 +298,35 @@ const Dashboard = () => {
         )}
 
         {activeTab === 'facilities' && (
-          <div className="space-y-8">
-            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Medical College Performance</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-gray-50">
-                      <th className="px-4 py-3 text-left font-medium text-gray-900">Medical College</th>
-                      <th className="px-4 py-3 text-left font-medium text-gray-900">Screened</th>
-                      <th className="px-4 py-3 text-left font-medium text-gray-900">Surgeries</th>
-                      <th className="px-4 py-3 text-left font-medium text-gray-900">Efficiency</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {medicalColleges.map((college, index) => (
-                      <tr key={index} className="border-b border-gray-100">
-                        <td className="px-4 py-3 font-medium">{college.name}</td>
-                        <td className="px-4 py-3">{college.screened.toLocaleString()}</td>
-                        <td className="px-4 py-3">{college.surgeries}</td>
-                        <td className="px-4 py-3">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            college.efficiency === 'High' ? 'bg-green-100 text-green-800' :
-                            college.efficiency === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-red-100 text-red-800'
-                          }`}>
-                            {college.efficiency}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+          <div className="bg-white rounded-lg shadow p-4 overflow-x-auto">
+            <h3 className="text-lg font-bold mb-2">Medical College Performance</h3>
+            <table className="min-w-full text-sm">
+              <thead>
+                <tr className="bg-gray-50">
+                  {['Medical College','Screened','Surgeries','Efficiency'].map(h => (
+                    <th key={h} className="p-2 text-left font-medium text-gray-900">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {medicalColleges.map((c,i) => (
+                  <tr key={i} className="border-b">
+                    <td className="p-2">{c.name}</td>
+                    <td className="p-2">{c.screened.toLocaleString()}</td>
+                    <td className="p-2">{c.surgeries}</td>
+                    <td className="p-2">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        c.efficiency === 'High' ? 'bg-green-100 text-green-800' :
+                        c.efficiency === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {c.efficiency}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
