@@ -101,8 +101,8 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-6">
-      <div className="max-w-5xl mx-auto">
+    <<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-6">
+  <div className="w-full max-w-7xl px-4 sm:px-6 lg:px-8 mx-auto">
         <header className="text-center mb-6">
           <h1 className="text-2xl md:text-4xl font-bold text-gray-900">Chokher Alo Dashboard</h1>
           <p className="text-gray-600 text-sm md:text-lg">Eye Care Program Analytics – West Bengal</p>
