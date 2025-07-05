@@ -170,33 +170,35 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-
-            <div className="bg-white rounded-lg shadow p-4 overflow-x-auto">
-              <h3 className="text-lg font-bold mb-2 flex items-center">
-                <Award className="w-5 h-5 mr-2 text-yellow-600" /> Top Districts
-              </h3>
-              <div className="space-y-2">
-                {topPerformers.map((d,i) => (
-                  <div key={i} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                    <div className="flex items-center">
-                      <div className={`w-6 h-6 flex items-center justify-center text-white font-bold rounded-full ${
-                        i===0 ? 'bg-yellow-500' : i===1 ? 'bg-gray-400' : 'bg-orange-500'}`}>
-                        {i+1}
-                      </div>
-                      <span className="ml-2 font-medium">{d.district}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm text-gray-600">{d.surgeries.toLocaleString()} surgeries</span>
-                      <div className="w-20 bg-gray-200 rounded-full h-2">
-                        <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${d.efficiency}%` }} />
-                      </div>
-                      <span className="text-sm font-medium">{d.efficiency}%</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+<div className="bg-white rounded-lg shadow p-4 overflow-x-auto">
+  <h3 className="text-lg font-bold mb-2 flex items-center">
+    <Award className="w-5 h-5 mr-2 text-yellow-600" /> Top Districts
+  </h3>
+  <div className="space-y-2">
+    {topPerformers.map((d, i) => (
+      <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-gray-50 rounded-lg">
+        <div className="flex items-center">
+          <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white font-bold ${
+            i === 0 ? 'bg-yellow-500' : i === 1 ? 'bg-gray-400' : 'bg-orange-500'
+          }`}>
+            {i + 1}
           </div>
+          <span className="ml-2 font-medium">{d.district}</span>
+        </div>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mt-2 sm:mt-0">
+          <div className="text-sm text-gray-600 text-center sm:text-left">
+            {d.surgeries.toLocaleString()} surgeries
+          </div>
+          <div className="w-full sm:w-32 bg-gray-200 rounded-full h-2 mt-1 sm:mt-0">
+            <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${d.efficiency}%` }}></div>
+          </div>
+          <span className="text-sm font-medium text-center sm:text-left mt-1 sm:mt-0">{d.efficiency}%</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+        </div>
         )}
 
         {activeTab === 'districts' && (
